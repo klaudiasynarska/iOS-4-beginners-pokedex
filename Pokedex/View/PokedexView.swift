@@ -16,11 +16,14 @@ struct PokedexView: View {
             Color(hex: viewModel.backgroundColor)
             VStack {
                 Text(viewModel.pokemonNumber)
-                    .padding()
+                    .font(Font.title)
+                    .foregroundColor(Color.white)
+                if let pokemonImage = viewModel.pokemonImage {
+                    Image(uiImage: pokemonImage)
+                }
                 Text(viewModel.pokemonName)
-                    .padding()
-                Text(viewModel.pokemonImageURL?.description ?? "")
-                    .padding()
+                    .font(Font.subheadline)
+                    .foregroundColor(Color.white)
             }
         }.onAppear {
             viewModel.loadData()

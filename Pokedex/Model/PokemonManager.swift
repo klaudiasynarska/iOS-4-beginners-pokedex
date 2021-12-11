@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 protocol PokemonManager {
     var pokemon: Pokemon? { get }
+    var pokemonImage: UIImage? { get }
     func loadCurrentPokemon() async throws
     func loadNextPokemon() async throws
     func loadPreviousPokemon() async throws
@@ -21,6 +23,7 @@ class PokemonManagerDefault: PokemonManager {
     }
     
     var pokemon: Pokemon?
+    var pokemonImage: UIImage?
     
     private var pokemonNumber: Int = 1
     
@@ -28,6 +31,7 @@ class PokemonManagerDefault: PokemonManager {
     
     func loadCurrentPokemon() async throws {
         pokemon = try await pokemonAPI.fetchPokemon(number: pokemonNumber)
+        pokemonImage = try await pokemonAPI.fetchPokemonImage(number: pokemonNumber)
     }
     
     func loadNextPokemon() async throws {

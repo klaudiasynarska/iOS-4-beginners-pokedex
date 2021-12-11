@@ -29,7 +29,10 @@ class PokedexViewModel: ObservableObject {
         return pokemon.color
     }
     
-    @Published var pokemonImageURL: URL?
+    var pokemonImage: UIImage? {
+        return pokemonManager.pokemonImage
+    }
+    
     @Published var errorMessage: String? { didSet { isShowingError = errorMessage != nil } }
     @Published var isLoading: Bool = false
     @Published var isShowingError: Bool = false
