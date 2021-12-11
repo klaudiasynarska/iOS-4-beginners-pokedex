@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct PokedexApp: App {
+    
+    let viewModel = PokedexViewModel(pokemonAPI: SwitterAPI())
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PokedexView()
+                .environmentObject(viewModel)
         }
     }
 }
