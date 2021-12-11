@@ -27,6 +27,10 @@ struct PokedexView: View {
             }
         }.onAppear {
             viewModel.loadData()
+        }.onTapGesture(count: 2) {
+            viewModel.onViewDoubleTapped()
+        }.onTapGesture {
+            viewModel.onViewTapped()
         }
     }
 }

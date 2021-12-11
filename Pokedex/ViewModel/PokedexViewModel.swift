@@ -58,4 +58,42 @@ class PokedexViewModel: ObservableObject {
             isLoading = false
         }
     }
+    
+    func onViewTapped() {
+        task = Task {
+            isLoading = true
+            do {
+                try await pokemonManager.loadNextPokemon()
+                
+                withAnimation {
+                    self.objectWillChange.send()
+                }
+
+            } catch let error {
+                print(error)
+                self.errorMessage = error.localizedDescription
+            }
+            
+            isLoading = false
+        }
+    }
+    
+    func onViewDoubleTapped() {
+        task = Task {
+            isLoading = true
+            do {
+                try await pokemonManager.loadPreviousPokemon()
+                
+                withAnimation {
+                    self.objectWillChange.send()
+                }
+
+            } catch let error {
+                print(error)
+                self.errorMessage = error.localizedDescription
+            }
+            
+            isLoading = false
+        }
+    }
 }
