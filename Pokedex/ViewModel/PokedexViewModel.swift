@@ -45,67 +45,26 @@ class PokedexViewModel: ObservableObject {
     }
     
     func loadData() {
-        task = Task {
-            isLoading = true
-            do {
-                try await pokemonManager.loadCurrentPokemon()
-                
-                withAnimation {
-                    self.objectWillChange.send()
-                }
-
-            } catch let error {
-                print(error)
-                self.errorMessage = error.localizedDescription
-            }
-            
-            isLoading = false
-        }
+        makeAction(pokemonManager.loadCurrentPokemon)
     }
     
     func onViewTapped() {
-        task = Task {
-            isLoading = true
-            do {
-                try await pokemonManager.loadNextPokemon()
-                
-                withAnimation {
-                    self.objectWillChange.send()
-                }
-
-            } catch let error {
-                print(error)
-                self.errorMessage = error.localizedDescription
-            }
-            
-            isLoading = false
-        }
+        makeAction(pokemonManager.loadNextPokemon)
     }
     
     func onViewDoubleTapped() {
-        task = Task {
-            isLoading = true
-            do {
-                try await pokemonManager.loadPreviousPokemon()
-                
-                withAnimation {
-                    self.objectWillChange.send()
-                }
-
-            } catch let error {
-                print(error)
-                self.errorMessage = error.localizedDescription
-            }
-            
-            isLoading = false
-        }
+        makeAction(pokemonManager.loadPreviousPokemon)
     }
     
     func onViewDragged() {
+        makeAction(pokemonManager.catchPokemon)
+    }
+    
+    private func makeAction(_ action: @escaping () async throws -> Void) {
         task = Task {
             isLoading = true
             do {
-                try await pokemonManager.catchPokemon()
+                try await action()
                 
                 withAnimation {
                     self.objectWillChange.send()

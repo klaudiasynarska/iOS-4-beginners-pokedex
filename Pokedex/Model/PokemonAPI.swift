@@ -33,13 +33,8 @@ class SwitterAPI: PokemonAPI {
     private static let baseURL: String = "https://switter.app.daftmobile.com"
     
     func fetchPokemon(number: Int) async throws -> Pokemon {
-        guard let url = URL(string: SwitterAPI.baseURL + "/api/pokemon/\(number)") else {
-            throw SwitterAPIError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        let deviceUuid = await UIDevice.current.identifierForVendor?.uuidString ?? ""
-        request.addValue(deviceUuid, forHTTPHeaderField: "x-device-uuid")
+        let path = "/api/pokemon/\(number)"
+        let request = try await createRequest(path: path)
 
         let (data, _) = try await URLSession.shared.data(for: request, delegate: nil)
         
@@ -51,14 +46,8 @@ class SwitterAPI: PokemonAPI {
     }
     
     func fetchPokemonImage(number: Int) async throws -> UIImage {
-        guard let url = URL(string: SwitterAPI.baseURL + "/api/pokemon/\(number)/image") else {
-            throw SwitterAPIError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        let deviceUuid = await UIDevice.current.identifierForVendor?.uuidString ?? ""
-        request.addValue(deviceUuid, forHTTPHeaderField: "x-device-uuid")
-
+        let path = "/api/pokemon/\(number)/image"
+        let request = try await createRequest(path: path)
         let (data, _) = try await URLSession.shared.data(for: request, delegate: nil)
         
         guard let image = UIImage(data: data) else {
@@ -69,13 +58,8 @@ class SwitterAPI: PokemonAPI {
     }
     
     func catchPokemon(number: Int) async throws -> Pokemon {
-        guard let url = URL(string: SwitterAPI.baseURL + "/api/pokemon/\(number)/catch") else {
-            throw SwitterAPIError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        let deviceUuid = await UIDevice.current.identifierForVendor?.uuidString ?? ""
-        request.addValue(deviceUuid, forHTTPHeaderField: "x-device-uuid")
+        let path = "/api/pokemon/\(number)/catch"
+        var request = try await createRequest(path: path)
         request.httpMethod = "POST"
 
         let (data, _) = try await URLSession.shared.data(for: request, delegate: nil)
@@ -85,5 +69,15 @@ class SwitterAPI: PokemonAPI {
         }
 
         return pokemon
+    }
+    
+    private func createRequest(path: String) async throws -> URLRequest {
+        guard let url = URL(string: SwitterAPI.baseURL + path) else {
+            throw SwitterAPIError.invalidURL
+        }
+        var request = URLRequest(url: url)
+        let deviceUuid = await UIDevice.current.identifierForVendor?.uuidString ?? ""
+        request.addValue(deviceUuid, forHTTPHeaderField: "x-device-uuid")
+        return request
     }
 }
