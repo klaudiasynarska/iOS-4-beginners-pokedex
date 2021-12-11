@@ -12,13 +12,16 @@ struct PokedexView: View {
     @EnvironmentObject var viewModel: PokedexViewModel
 
     var body: some View {
-        VStack {
-            Text(viewModel.pokemonNumber)
-                .padding()
-            Text(viewModel.pokemonName)
-                .padding()
-            Text(viewModel.pokemonImageURL?.description ?? "")
-                .padding()
+        ZStack {
+            Color(hex: viewModel.backgroundColor)
+            VStack {
+                Text(viewModel.pokemonNumber)
+                    .padding()
+                Text(viewModel.pokemonName)
+                    .padding()
+                Text(viewModel.pokemonImageURL?.description ?? "")
+                    .padding()
+            }
         }.onAppear {
             viewModel.loadData()
         }

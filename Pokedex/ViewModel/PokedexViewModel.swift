@@ -19,7 +19,16 @@ class PokedexViewModel: ObservableObject {
         return String(pokemon.number)
     }
     
-    @Published var pokemonName: String = ""
+    var pokemonName: String {
+        guard let pokemon = pokemonManager.pokemon else { return "" }
+        return pokemon.name
+    }
+    
+    var backgroundColor: Int {
+        guard let pokemon = pokemonManager.pokemon else { return 0 }
+        return pokemon.color
+    }
+    
     @Published var pokemonImageURL: URL?
     @Published var errorMessage: String? { didSet { isShowingError = errorMessage != nil } }
     @Published var isLoading: Bool = false
@@ -35,7 +44,6 @@ class PokedexViewModel: ObservableObject {
                 try await pokemonManager.loadCurrentPokemon()
                 
                 withAnimation {
-//                    guard let pokemon = pokemonManager.pokemon else { return }
                     self.objectWillChange.send()
                 }
 
