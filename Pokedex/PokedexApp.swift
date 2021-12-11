@@ -10,12 +10,10 @@ import SwiftUI
 @main
 struct PokedexApp: App {
     
-    let viewModel = PokedexViewModel(pokemonAPI: SwitterAPI())
-    
     var body: some Scene {
         WindowGroup {
             PokedexView()
-                .environmentObject(viewModel)
+                .environmentObject(PokedexViewModel(pokemonManager: PokemonManagerDefault()))
         }
     }
 }

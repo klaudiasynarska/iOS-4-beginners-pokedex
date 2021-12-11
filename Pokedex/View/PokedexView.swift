@@ -19,6 +19,8 @@ struct PokedexView: View {
                 .padding()
             Text(viewModel.pokemonImageURL?.description ?? "")
                 .padding()
+        }.onAppear {
+            viewModel.loadData()
         }
     }
 }
