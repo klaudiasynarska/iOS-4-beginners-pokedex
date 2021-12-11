@@ -14,6 +14,7 @@ protocol PokemonManager {
     func loadCurrentPokemon() async throws
     func loadNextPokemon() async throws
     func loadPreviousPokemon() async throws
+    func catchPokemon() async throws
 }
 
 class PokemonManagerDefault: PokemonManager {
@@ -43,5 +44,10 @@ class PokemonManagerDefault: PokemonManager {
         guard pokemonNumber > 1 else { return }
         pokemonNumber -= 1
         try await loadCurrentPokemon()
+    }
+    
+    func catchPokemon() async throws {
+        pokemon = try await pokemonAPI.catchPokemon(number: pokemonNumber)
+        pokemonImage = try await pokemonAPI.fetchPokemonImage(number: pokemonNumber)
     }
 }

@@ -96,4 +96,23 @@ class PokedexViewModel: ObservableObject {
             isLoading = false
         }
     }
+    
+    func onViewDragged() {
+        task = Task {
+            isLoading = true
+            do {
+                try await pokemonManager.catchPokemon()
+                
+                withAnimation {
+                    self.objectWillChange.send()
+                }
+
+            } catch let error {
+                print(error)
+                self.errorMessage = error.localizedDescription
+            }
+            
+            isLoading = false
+        }
+    }
 }

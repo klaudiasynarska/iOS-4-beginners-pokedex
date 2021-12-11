@@ -14,6 +14,7 @@ struct PokedexView: View {
     var body: some View {
         ZStack {
             Color(hex: viewModel.backgroundColor)
+                .edgesIgnoringSafeArea(.all)
             VStack {
                 Text(viewModel.pokemonNumber)
                     .font(Font.title)
@@ -35,7 +36,12 @@ struct PokedexView: View {
             viewModel.onViewDoubleTapped()
         }.onTapGesture {
             viewModel.onViewTapped()
-        }
+        }.gesture(dragGesture)
+    }
+    
+    private var dragGesture: some Gesture {
+        DragGesture()
+            .onEnded { _ in self.viewModel.onViewDragged() }
     }
 }
 
