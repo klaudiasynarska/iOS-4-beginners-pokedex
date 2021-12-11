@@ -40,6 +40,10 @@ class PokedexViewModel: ObservableObject {
     private let pokemonManager: PokemonManager
     private var task: Task<(), Never>?
     
+    func hideError() {
+        errorMessage = nil
+    }
+    
     func loadData() {
         task = Task {
             isLoading = true

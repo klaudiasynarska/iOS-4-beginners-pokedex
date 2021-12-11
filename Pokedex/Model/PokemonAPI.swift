@@ -14,9 +14,18 @@ protocol PokemonAPI {
     func fetchPokemonImage(number: Int) async throws -> UIImage
 }
 
-enum SwitterAPIError: Error {
+enum SwitterAPIError: LocalizedError {
     case invalidURL
     case invalidData
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Wrong URL"
+        case .invalidData:
+            return "Failed to load data"
+        }
+    }
 }
 
 class SwitterAPI: PokemonAPI {
