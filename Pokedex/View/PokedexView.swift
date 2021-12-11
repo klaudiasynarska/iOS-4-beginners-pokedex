@@ -25,6 +25,10 @@ struct PokedexView: View {
                     .font(Font.subheadline)
                     .foregroundColor(Color.white)
             }
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+            }
         }.onAppear {
             viewModel.loadData()
         }.onTapGesture(count: 2) {
